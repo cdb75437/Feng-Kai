@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>2025/05/04 報表</title>
+  <title>客戶專用報表</title>
   <style>
     body { font-family: Arial; padding: 20px; background-color: #fafafa; }
     h2 { color: #333; }
@@ -30,7 +30,7 @@
   </style>
 </head>
 <body>
-  <h2>📊 2025/05/04 客戶專用報表（Feng Kai 專用）</h2>
+  <h2 id="reportTitle">📊 報表（Feng Kai 專用）</h2>
   <label>篩選 ID：
     <select id="idFilter" onchange="filterTable()">
       <option value="全部顯示">全部顯示</option>
@@ -39,6 +39,14 @@
   <table id="sheetTable"></table>
 
   <script>
+    // ====== 自動產生今日日期 ======
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById("reportTitle").textContent = `📊 ${yyyy}/${mm}/${dd} 客戶專用報表（Feng Kai 專用）`;
+
+    // ====== 抓 Google Sheet 資料 ======
     const sheetID = "1zuolSpQkKCwDnhx4TNUZuWMIj_7JNJMrLBWrfYuubPQ";
     const sheetName = "Sheet3";
     const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=${sheetName}`;
@@ -73,6 +81,7 @@
         renderTable("全部顯示");
       });
 
+    // ====== 畫表格 ======
     function renderTable(filterID) {
       const table = document.getElementById("sheetTable");
       table.innerHTML = `<tr>
@@ -104,6 +113,7 @@
       });
     }
 
+    // ====== 篩選功能 ======
     function filterTable() {
       const selectedID = document.getElementById("idFilter").value;
       renderTable(selectedID);
